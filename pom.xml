@@ -14,7 +14,8 @@
 	<name>zatech-app</name>
 	<description>Zatech Assessment App</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>1.8</java.version>
+		<jib-maven-plugin.version>1.4.0</jib-maven-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -55,6 +56,28 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>jib-maven-plugin</artifactId>
+				<groupId>com.google.cloud.tools</groupId>
+				<version>${jib-maven-plugin.version}</version>
+				<configuration>
+					<from>
+						<image>openjdk:alpine</image>
+					</from>
+					<to>
+						<auth>
+							<username>${DOCKER_USERNAME}</username>
+							<password>${DOCKER_PASSWORD}</password>
+						</auth>
+						<image>registry.hub.docker.com/ucheka22/${project.artifactId}</image>
+					</to>
+					<container>
+						<ports>
+							<port>9090</port>
+						</ports>
+					</container>
 				</configuration>
 			</plugin>
 		</plugins>
