@@ -4,6 +4,9 @@ jdk:
 notifications:
   email: ryanucheka@gmail.com
 
+services:
+  - docker
+
 before_install:
   - echo "Before installing docker"
   - docker pull openjdk:8-jdk-alpine
