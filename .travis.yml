@@ -12,12 +12,8 @@ before_install:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   - docker login -u $HEROKU_USERNAME --password=$HEROKU_TOKEN registry.heroku.com
 
-#install:
-#  # INSTALL DEPENDENCIES
-#  - docker pull openjdk:8-jdk-alpine
-
 script:
-#  - mvn clean package -DskipTests
+# BY DEFAULT TRAVIS RUNS mvn test & mvn clean package ON SEEING A POM FILE IN THE ROOT DIRECTORY
   # build docker images
   - docker build -t ucheka22/zatech-app .
   - docker tag ucheka22/zatech-app registry.heroku.com/$HEROKU_APP_NAME/web
@@ -31,22 +27,3 @@ deploy:
     heroku container:release web --app $HEROKU_APP_NAME
   on:
     branch: develop
-#script:
-#  - mvn clean compile jib:build
-
-#after_success:
-#  - export COMMIT=${TRAVIS_COMMIT::7}
-##  - export TAG=`if [ ! -z "$TRAVIS_TAG" ]; then echo "$TRAVIS_TAG"; else echo "$TRAVIS_BRANCH--$COMMIT"; fi`
-#  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-#  - docker build -t $IMAGE_NAME:$COMMIT .
-##  - docker tag $IMAGE_NAME:$COMMIT $IMAGE_NAME:$TAG
-#  - docker push $IMAGE_NAME
-#deploy:
-#  provider: heroku
-#  api_key: $HEROKU_API_KEY
-#  on:
-#    branch: develop
-#
-#after_deploy:
-#  - export TITLE="🎉🎉🎉New version $TAG is deployed to Heroku production🎉🎉🎉"
-#  - export TEXT=[datetime]:`date`
