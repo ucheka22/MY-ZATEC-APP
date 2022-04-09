@@ -24,8 +24,7 @@ deploy:
   provider: heroku
   api_key: $HEROKU_API_KEY
   on:
-    tags: true
-    repo: $IMAGE_NAME
+    branch: develop
 #
 #after_deploy:
 #  - export TITLE="🎉🎉🎉New version $TAG is deployed to Heroku production🎉🎉🎉"
