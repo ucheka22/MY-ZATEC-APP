@@ -5,11 +5,12 @@ notifications:
   email: ryanucheka@gmail.com
 
 before_install:
+  - echo "Before installing docker"
   - docker pull openjdk:8-jdk-alpine
 #script:
 #  - mvn test
 #  - mvn clean package
-#
+
 #after_success:
 #  - export COMMIT=${TRAVIS_COMMIT::7}
 #  - export TAG=`if [ ! -z "$TRAVIS_TAG" ]; then echo "$TRAVIS_TAG"; else echo "$TRAVIS_BRANCH--$COMMIT"; fi`
