@@ -13,7 +13,7 @@ before_install:
   - docker login -u $HEROKU_USERNAME --password=$HEROKU_TOKEN registry.heroku.com
 
 install:
-  # install deps
+  # INSTALL DEPENDENCIES
   - docker pull openjdk:8-jdk-alpine
 
 script:
