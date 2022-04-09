@@ -20,15 +20,15 @@ after_success:
   - docker push $IMAGE_NAME
 after_failure:
   - echo "CODE DEPLOYMENT FAILED"
+
 deploy:
   provider: heroku
-  api-key:
-    secure: $HEROKU_API_KEY
-  app: zatech-app
+  api_key: $HEROKU_API_KEY
   on:
     develop
     tags: true
-    repo: "$IMAGE_NAME"
+    repo: $IMAGE_NAME
+
 after_deploy:
   - export TITLE="🎉🎉🎉New version $TAG is deployed to Heroku production🎉🎉🎉"
   - export TEXT=[datetime]:`date`
