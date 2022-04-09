@@ -9,3 +9,5 @@ deploy:
   api-key:
     secure: $HEROKU_API_KEY
   app: zatech-app
+  on:
+    develop
