@@ -8,9 +8,32 @@ services:
   - docker
 
 before_install:
+  - wget -qO- https://toolbelt.heroku.com/install.sh | sh
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  - docker login -u "$HEROKU_USERNAME" --password=$(heroku auth:token) registry.heroku.com
+
+install:
+  # install deps
   - docker pull openjdk:8-jdk-alpine
+
 script:
-  - mvn clean compile jib:build
+  - mvn test
+  - mvn clean package
+  # build docker images
+  - docker build -t ucheka22/zatech-app .
+  - docker tag ucheka22/zatech-app registry.heroku.com/$HEROKU_APP_NAME/web
+
+deploy:
+  provider: script
+  script:
+    # push to dockerhub & heroku
+    docker push ucheka22/zatech-app;
+    docker push registry.heroku.com/$HEROKU_APP_NAME/web;
+    heroku container:release web --app $HEROKU_APP_NAME
+  on:
+    branch: develop
+#script:
+#  - mvn clean compile jib:build
 
 #after_success:
 #  - export COMMIT=${TRAVIS_COMMIT::7}
@@ -19,12 +42,11 @@ script:
 #  - docker build -t $IMAGE_NAME:$COMMIT .
 ##  - docker tag $IMAGE_NAME:$COMMIT $IMAGE_NAME:$TAG
 #  - docker push $IMAGE_NAME
-
-deploy:
-  provider: heroku
-  api_key: $HEROKU_API_KEY
-  on:
-    branch: develop
+#deploy:
+#  provider: heroku
+#  api_key: $HEROKU_API_KEY
+#  on:
+#    branch: develop
 #
 #after_deploy:
 #  - export TITLE="🎉🎉🎉New version $TAG is deployed to Heroku production🎉🎉🎉"
