@@ -23,11 +23,15 @@ public class AppController {
         return "Hello World";
     }
 
+    @Operation(summary = "Get All Star War Actors")
+    @ResponseStatus(code = HttpStatus.OK)
     @GetMapping("/swapi/people")
     public String getSwapiPeople() {
         return "Hello World";
     }
 
+    @Operation(summary = "Search Chuck Jokes and Star War Actors")
+    @ResponseStatus(code = HttpStatus.OK)
     @GetMapping("/search")
     public String search(@Parameter(description = "The search query string") @RequestParam("query") String query) {
         return "Hello World";
