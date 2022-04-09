@@ -12,13 +12,12 @@ before_install:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
   - docker login -u $HEROKU_USERNAME --password=$HEROKU_TOKEN registry.heroku.com
 
-install:
-  # INSTALL DEPENDENCIES
-  - docker pull openjdk:8-jdk-alpine
+#install:
+#  # INSTALL DEPENDENCIES
+#  - docker pull openjdk:8-jdk-alpine
 
 script:
-  - mvn test
-  - mvn clean package
+#  - mvn clean package -DskipTests
   # build docker images
   - docker build -t ucheka22/zatech-app .
   - docker tag ucheka22/zatech-app registry.heroku.com/$HEROKU_APP_NAME/web

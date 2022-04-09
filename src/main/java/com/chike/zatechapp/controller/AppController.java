@@ -6,15 +6,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("api/v1")
 public class AppController {
 
-    @GetMapping("/")
-    public String ping(){
+    @GetMapping("/chuck/categories")
+    public String getJokesCategories(){
         return  "Hello World";
     }
 
     @GetMapping("/swapi/people")
-    public String getSwapi(){
+    public String getSwapiPeople(){
         return  "Hello World";
     }
 
