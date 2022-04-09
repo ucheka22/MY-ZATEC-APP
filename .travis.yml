@@ -10,7 +10,7 @@ services:
 before_install:
   - wget -qO- https://toolbelt.heroku.com/install.sh | sh
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-  - docker login -u "$HEROKU_USERNAME" --password=$(heroku auth:token) registry.heroku.com
+  - docker login -u $HEROKU_USERNAME --password=$HEROKU_TOKEN registry.heroku.com
 
 install:
   # install deps
