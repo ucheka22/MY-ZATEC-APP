@@ -1,0 +1,29 @@
+language: java
+jdk:
+  - openjdk8
+notifications:
+  email: ryanucheka@gmail.com
+
+services:
+  - docker
+
+before_install:
+  - wget -qO- https://toolbelt.heroku.com/install.sh | sh
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  - docker login -u $HEROKU_USERNAME --password=$HEROKU_TOKEN registry.heroku.com
+
+script:
+# BY DEFAULT TRAVIS RUNS mvn test & mvn clean package ON SEEING A POM FILE IN THE ROOT DIRECTORY
+  # build docker images
+  - docker build -t ucheka22/zatech-app .
+  - docker tag ucheka22/zatech-app registry.heroku.com/$HEROKU_APP_NAME/web
+
+deploy:
+  provider: script
+  script:
+    # push to dockerhub & heroku
+    docker push ucheka22/zatech-app;
+    docker push registry.heroku.com/$HEROKU_APP_NAME/web;
+    heroku container:release web --app $HEROKU_APP_NAME
+  on:
+    branch: develop
