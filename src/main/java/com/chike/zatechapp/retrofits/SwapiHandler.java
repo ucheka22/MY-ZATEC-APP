@@ -29,7 +29,6 @@ public class SwapiHandler {
     private SwapiService swapiService;
 
 
-
     @PostConstruct
     public void init() {
 
@@ -45,7 +44,7 @@ public class SwapiHandler {
 
     }
 
-    public AppResponse getAllSwapiPeople()  {
+    public AppResponse getAllSwapiPeople() {
 
         try {
 
@@ -54,16 +53,16 @@ public class SwapiHandler {
             log.info("THE RESPONSE IS {}", res.toString());
 
             if (res.isSuccessful()) {
-                return new AppResponse<>(true,"Request successful",res.body());
+                return new AppResponse<>(true, "Request successful", res.body());
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new AppResponse<>(false,"Request unsuccessful",null);
+        return new AppResponse<>(false, "Request unsuccessful", null);
     }
 
-    public AppResponse searchSwapiPeople(String query)  {
+    public AppResponse searchSwapiPeople(String query) {
 
         try {
 
@@ -74,15 +73,16 @@ public class SwapiHandler {
             if (res.isSuccessful()) {
 
                 SwapiResponse data = res.body();
+                log.info("THE RESPONSE BODY {}", res.body());
 
-                if (data.getCount().equals(0))
-                return new AppResponse<>(true,"Request successful",res.body());
+                if (!data.getCount().equals(0))
+                    return new AppResponse<>(true, "Request successful", res.body().getResults());
             }
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return new AppResponse<>(false,"Request unsuccessful",null);
+        return new AppResponse<>(false, "Request unsuccessful", null);
     }
 
 }

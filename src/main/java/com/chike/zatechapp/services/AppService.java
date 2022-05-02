@@ -10,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,47 +24,46 @@ public class AppService {
     private final ChuckNorrisHandler chuckNorrisHandler;
     private final SwapiHandler swapiHandler;
 
-    public AppResponse searchAPIs(String query) {
+
+    public AppResponse search(String query) {
+
         List<SearchData> searchDataList = new ArrayList<>();
 
-
-        MetaData chuckNorris = new MetaData();
-        chuckNorris.setApiType(APIType.CHUCKNORRIS);
-        chuckNorris.setUrl(chuckNorrisBaseUrl + "jokes/search");
-
-        MetaData swapi = new MetaData();
-        swapi.setApiType(APIType.SWAPI);
-        swapi.setUrl(swapiBaseUrl + "api/people/search");
-
-        List<MetaData> apis = Arrays.asList(chuckNorris, swapi);
+        List<APIType> apiTypes = Arrays.asList(APIType.CHUCKNORRIS, APIType.SWAPI);
 
 
-        apis.parallelStream().forEach((metaData -> {
+        apiTypes.parallelStream().forEach((type -> {
 
-            if (metaData.getApiType().equals(APIType.CHUCKNORRIS)) {
+            if (type.equals(APIType.CHUCKNORRIS)) {
 
-                SearchData data = new SearchData();
+                MetaData chuckNorrisMeta = new MetaData();
 
-                data.setMetaData(metaData);
-                data.setData((Object) chuckNorrisHandler.searchJokes(query).getData());
+                chuckNorrisMeta.setApiType(APIType.CHUCKNORRIS);
+                chuckNorrisMeta.setUrl(chuckNorrisBaseUrl + "jokes/search");
 
-                if (data.getData() != null)
-                    searchDataList.add(data);
+                SearchData searchData = new SearchData();
 
-            }
+                searchData.setRecords(chuckNorrisHandler.searchJokes(query).getData());
+                searchData.setMetaData(chuckNorrisMeta);
+                searchDataList.add(searchData);
 
-            if (metaData.getApiType().equals(APIType.SWAPI)) {
+            }else {
+                MetaData swapiMeta = new MetaData();
 
-                SearchData data = new SearchData();
+                swapiMeta.setApiType(APIType.SWAPI);
+                swapiMeta.setUrl(swapiBaseUrl + "api/people/search" );
 
-                data.setMetaData(metaData);
-                data.setData((Object) swapiHandler.searchSwapiPeople(query).getData());
+                SearchData searchData = new SearchData();
 
-                if (data.getData() != null)
-                    searchDataList.add(data);
-
+                searchData.setRecords(swapiHandler.searchSwapiPeople(query).getData());
+                searchData.setMetaData(swapiMeta);
+                searchDataList.add(searchData);
             }
         }));
-        return new AppResponse(true, "Request successful", searchDataList);
+
+
+        return new AppResponse(true,"Request successful",searchDataList);
     }
+
+
 }

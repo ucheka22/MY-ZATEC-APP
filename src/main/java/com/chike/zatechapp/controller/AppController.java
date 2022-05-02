@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-
-
 @RestController
 @RequestMapping("api/v1")
 @Tag(name = "APP Controller", description = "Get Jokes Category & Star War People")
@@ -37,6 +35,14 @@ public class AppController {
         return chuckNorrisHandler.getAllJokesCategories();
     }
 
+    @Operation(summary = "Get Random Chuck Norris Joke")
+    @ResponseStatus(code = HttpStatus.OK)
+    @GetMapping("/chuck/jokes")
+    public AppResponse searchJokesByCategory(@Parameter(description = "The joke category") @RequestParam("category") String category) {
+
+        return chuckNorrisHandler.searchJokesByCategory(category);
+    }
+
     @Operation(summary = "Get All Star War Actors")
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping("/swapi/people")
@@ -50,7 +56,7 @@ public class AppController {
     @GetMapping("/search")
     public AppResponse search(@Parameter(description = "The search query string") @RequestParam("query") String query) {
 
-       return appService.searchAPIs(query);
+       return appService.search(query);
     }
 
 }

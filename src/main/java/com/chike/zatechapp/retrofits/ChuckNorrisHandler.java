@@ -2,6 +2,7 @@ package com.chike.zatechapp.retrofits;
 
 import com.chike.zatechapp.dto.AppResponse;
 import com.chike.zatechapp.dto.ChuckJokeResponse;
+import com.chike.zatechapp.dto.Joke;
 import com.chike.zatechapp.exception.AppException;
 import com.chike.zatechapp.services.ChuckNorrisService;
 import com.chike.zatechapp.utils.CustomGsonConverterFactory;
@@ -74,6 +75,26 @@ public class ChuckNorrisHandler {
         try {
 
             Response<ChuckJokeResponse> res = chuckNorrisService.searchJokes(query).execute();
+
+            log.info("THE RESPONSE IS {}", res.toString());
+
+            if (res.isSuccessful()) {
+
+                return new AppResponse<>(true,"Request successful",res.body().getResult());
+
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return new AppResponse<>(false,"Request unsuccessful",null);
+    }
+
+    public AppResponse searchJokesByCategory(String category) {
+
+        try {
+
+            Response<Joke> res = chuckNorrisService.searchJokesByCategory(category).execute();
 
             log.info("THE RESPONSE IS {}", res.toString());
 
