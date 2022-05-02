@@ -16,7 +16,6 @@ Check out to **develop** branch. In the project directory, you can run:
 
 Access API in development mode on [http://localhost:9090](http://localhost:9090).
 
-
 ## Technologies
 
 *  **Front End:**  React, Docker, Travis CI (CI/CD), NGINX
